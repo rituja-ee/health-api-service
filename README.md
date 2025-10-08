@@ -50,6 +50,8 @@ Returns application metrics of the system.
 - psutil
 - pytest
 - httpx
+- black
+- flake8
 
 ## Installation
 1. Clone the repository
@@ -71,6 +73,21 @@ poetry run uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 2. Run the tests 
 ```bash 
 poetry run pytest -v
+```
+3. Run the formatting
+#### To check formatting (without changing files):
+```bash
+poetry run black --check .
+```
+
+#### To auto-format:
+```bash
+poetry run black .
+```
+
+4. Run the linting
+```bash
+poetry run flake8
 ```
 
 # Project Structure

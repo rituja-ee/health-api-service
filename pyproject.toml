@@ -7,7 +7,10 @@ requires-python = ">=3.11"
 dependencies = [
     "fastapi (>=0.118.0,<0.119.0)",
     "uvicorn (>=0.37.0,<0.38.0)",
-    "psutil (>=7.1.0,<8.0.0)"
+    "psutil (>=7.1.0,<8.0.0)",
+    "flake8 (>=7.3.0,<8.0.0)",
+    "black (>=25.9.0,<26.0.0)",
+    "flake8-pyproject (>=1.2.3,<2.0.0)"
 ]
 package-mode = false
 
@@ -20,3 +23,21 @@ test = [
     "pytest (>=8.4.2,<9.0.0)",
     "httpx (>=0.28.1,<0.29.0)"
 ]
+
+[tool.flake8]
+max-line-length = 100
+exclude = [".git", "__pycache__", ".pytest_cache"]
+per-file-ignores = [ "__init__.py:F401" ]
+extend-ignore = "E203" # E203 is often ignored to avoid conflicts with Black's spacing rules for slices.
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+exclude = '''
+/(
+    \.git
+  | __pycache__
+  | \.pytest_cache
+)/
+'''
+
