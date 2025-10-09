@@ -49,3 +49,36 @@ jobs:
       - name: Run unit tests
         run: |
           poetry run pytest
+  
+  deploy-verify:
+    name: Deploy and Verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 - --version ${{ env.POETRY_VERSION }}
+          echo "${HOME}/.local/bin" >> $GITHUB_PATH
+          poetry --version
+        
+      - name: Install Dependencies
+        run: poetry install --no-interaction --no-root
+
+      - name: Start Health API service in background
+        run: |
+          nohup poetry run uvicorn app.main:app --host 127.0.0.1 --port 8000 &
+          sleep 5
+
+      - name: Verify server started
+        run: curl -I http://127.0.0.1:8000
+
+      - name: Verify health endpoint
+        run: |
+          curl -f http://127.0.0.1:8000/health || exit 1
