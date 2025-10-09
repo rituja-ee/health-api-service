@@ -9,7 +9,7 @@ app = FastAPI()
 @app.get("/")
 def health_check():
     return JSONResponse(
-        status_code=status.HTTP_200_OK, content={"message": "Health API service is running"}
+        status_code=status.HTTP_200_OK, content={"message": "Health API service is running"} 
     )
 
 
