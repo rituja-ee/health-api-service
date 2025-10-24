@@ -105,3 +105,13 @@ health-api-service/
 ├── pyproject.toml          # Project configuration requirements
 └── README.md               # This file
 ```
+
+# Deployment Workflow
+| Stage        | Description                                                                   |
+| ------------ | ----------------------------------------------------------------------------- |
+| **Checkout** | Retrieves source code from the repository.                                    |
+| **Build**    | Sets up Python, installs Poetry, and project dependencies.     |
+| **Lint**     | Runs code format and lint checks using **Black** and **Flake8**.              |
+| **Test**     | Executes unit tests with **pytest**, generates coverage reports (XML). |
+| **Deploy**   | Deploys the FastAPI app to the target environment (customizable).             |
+| **Verify**   | Performs a `curl` check against `/health` to ensure deployment success.       |
