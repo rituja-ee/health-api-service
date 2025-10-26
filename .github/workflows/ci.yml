@@ -95,7 +95,9 @@ jobs:
           ${{ secrets.DOCKERHUB_USERNAME }}/health-api-service:latest
 
       - name: Verify server started
-        run: curl -I http://localhost:8000
+        run: | 
+          sleep 5
+          curl -I http://localhost:8000
 
       - name: Verify health endpoint
         run: |
