@@ -90,6 +90,22 @@ poetry run black .
 poetry run flake8
 ```
 
+# Docker Setup
+## Build Image
+```bash
+docker build -t health-api-service:latest .
+```
+
+## Run the container
+```bash
+docker run -d -p 8000:8000 health-api-service:latest
+```
+
+## Verify
+```bash
+curl http://localhost:8000/health
+```
+
 # Project Structure
 ```
 health-api-service/
@@ -103,6 +119,7 @@ health-api-service/
 ├── .python-version         # Python version for this repository
 ├── poetry.lock             # Poetry dependency management
 ├── pyproject.toml          # Project configuration requirements
+├── Dockerfile              # Dockerfile for containerize the application
 └── README.md               # This file
 ```
 
@@ -110,8 +127,8 @@ health-api-service/
 | Stage        | Description                                                                   |
 | ------------ | ----------------------------------------------------------------------------- |
 | **Checkout** | Retrieves source code from the repository.                                    |
-| **Build**    | Sets up Python, installs Poetry, and project dependencies.     |
 | **Lint**     | Runs code format and lint checks using **Black** and **Flake8**.              |
 | **Test**     | Executes unit tests with **pytest**, generates coverage reports (XML). |
-| **Deploy**   | Deploys the FastAPI app to the target environment (customizable).             |
+| **Build**    | Build the application, create a docker image and push the image to docker hub.     |
+| **Deploy**   | Pull docker image from docker hub and run the container.             |
 | **Verify**   | Performs a `curl` check against `/health` to ensure deployment success.       |
