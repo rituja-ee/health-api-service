@@ -94,6 +94,10 @@ jobs:
           docker run -d -p 8000:8000 --name health-api \
           ${{ secrets.DOCKERHUB_USERNAME }}/health-api-service:latest
 
+      - name: List container
+        run: |
+          docker ps -a
+
       - name: Verify health endpoint
         run: |
           curl -f http://localhost:8000/health || exit 1
