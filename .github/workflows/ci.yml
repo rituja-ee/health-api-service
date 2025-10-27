@@ -94,10 +94,9 @@ jobs:
           docker run -d -p 8000:8000 --name health-api \
           ${{ secrets.DOCKERHUB_USERNAME }}/health-api-service:latest
 
-      - name: List container
-        run: |
-          docker ps -a
-          sleep 15
+      - name: Verify server started
+        run: | 
+          curl -I http://localhost:8000
 
       - name: Verify health endpoint
         run: |
