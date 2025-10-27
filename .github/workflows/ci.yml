@@ -97,6 +97,7 @@ jobs:
       - name: List container
         run: |
           docker ps -a
+          sleep 15
 
       - name: Verify health endpoint
         run: |
