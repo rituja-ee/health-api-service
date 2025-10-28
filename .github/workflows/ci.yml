@@ -98,6 +98,17 @@ jobs:
         run: |
           docker ps -a
 
+      - name: Wait for server to be ready
+        run: |
+          for i in {1..15}; do
+            echo "Checking if server is up... attempt $i"
+            if curl -s http://localhost:8000 > /dev/null; then
+              echo "Server is up!"
+              break
+            fi
+            sleep 5
+          done
+
       - name: Verify server started
         run: | 
           curl -I http://localhost:8000
