@@ -43,6 +43,7 @@ Returns application metrics of the system.
 ## Pre-requisite
 - Python - 3.11.9
 - Poetry - 2.2.1
+- minikube
 
 ## Dependencies
 - Fast API
@@ -66,7 +67,7 @@ poetry install --no-root
 ```
 
 # How to run
-1. Run the application
+1. Run the application without containers
 ```bash 
 poetry run uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
@@ -106,6 +107,34 @@ docker run -d -p 8000:8000 health-api-service:latest
 curl http://localhost:8000/health
 ```
 
+# Kubernetes Setup
+## Start k8s
+```bash
+minikube start
+```
+
+## Apply manifest/configs files
+```bash
+kubectl apply -f k8s/namespace.yaml
+kubectl apply -f k8s/deployment.yaml
+kubectl apply -f k8s/service.yaml
+```
+
+## Change the namespace
+```bash
+kubectl config set-context --current --namespace=health-api
+```
+
+## Create tunnel
+```bash
+minikube tunnel
+```
+
+## Verify service is running
+```bash
+Hit the url in browser http://127.0.0.1:8000
+```
+
 # Project Structure
 ```
 health-api-service/
@@ -115,6 +144,14 @@ health-api-service/
 ├── tests/                  # Unit tests directory
 │   ├── __init__.py
 │   └── test_health_api.py  # Health endpoint tests
+├── .github/workflows                  
+│   ├── ci.yaml
+├── k8s/                  # Unit tests directory
+│   ├── deployment.yaml
+│   └── namespace.yaml
+│   └── service.yaml  
+│   └── configmap.yaml  
+│   └── dockerhub-sercret.yaml  
 ├── .gitignore
 ├── .python-version         # Python version for this repository
 ├── poetry.lock             # Poetry dependency management
