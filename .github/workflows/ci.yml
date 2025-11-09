@@ -101,9 +101,12 @@ jobs:
           kubectl apply -f k8s/configmap.yaml || echo "No configmap found"
           kubectl apply -f k8s/deployment.yaml
           kubectl apply -f k8s/service.yaml
+      
+      - name: List deployments
+        run: kubectl get deployments -n health-api
 
       - name: Wait for deployment rollout
-        run: kubectl rollout status deployment/health-api -n health-api
+        run: kubectl rollout status deployment/health-api-deployment -n health-api
 
       - name: Verify via port-forward
         run: |
