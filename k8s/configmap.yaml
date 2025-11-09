@@ -5,4 +5,4 @@ metadata:
   name: image-config
   namespace: health-api
 data:
-  DOCKERHUB_USERNAME: "ritujaee”
+  DOCKERHUB_USERNAME: ritujaee
