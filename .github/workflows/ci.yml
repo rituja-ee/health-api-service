@@ -94,6 +94,10 @@ jobs:
       - name: Install kubectl
         uses: azure/setup-kubectl@v4
 
+      - name: Apply namespace manifests
+        run: |
+          kubectl apply -f k8s/namespace.yaml
+
       - name: Create DockerHub image pull secret
         run: |
           kubectl create secret docker-registry dockerhub-secret \
@@ -103,9 +107,8 @@ jobs:
             --docker-email="rituja.chaudhari@equalexperts.com" \
             -n health-api
       
-      - name: Apply manifests
+      - name: Apply other manifests
         run: |
-          kubectl apply -f k8s/namespace.yaml
           kubectl apply -f k8s/dockerhub-secret.yaml
           kubectl apply -f k8s/configmap.yaml || echo "No configmap found"
           kubectl apply -f k8s/deployment.yaml
