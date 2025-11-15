@@ -109,7 +109,6 @@ jobs:
       
       - name: Apply other manifests
         run: |
-          kubectl apply -f k8s/dockerhub-secret.yaml
           kubectl apply -f k8s/configmap.yaml || echo "No configmap found"
           kubectl apply -f k8s/deployment.yaml
           kubectl apply -f k8s/service.yaml
