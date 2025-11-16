@@ -82,24 +82,16 @@ jobs:
   
   deploy-verify:
     name: Deploy and Verify
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: build-push
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # - name: Configure kubectl
-      #   run: |
-      #     mkdir -p $HOME/.kube
-      #     echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > $HOME/.kube/config
-
       - name: Set up kubeconfig
         run: |
           mkdir -p $HOME/.kube
           echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 --decode > $HOME/.kube/config
-
-      - name: Install kubectl
-        uses: azure/setup-kubectl@v4
 
       - name: Apply namespace manifests
         run: |
