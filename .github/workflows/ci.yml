@@ -94,9 +94,14 @@ jobs:
           kubectl config use-context minikube
           kubectl cluster-info
 
-      - name: Apply namespace manifests
+      - name: Install Helm
         run: |
-          kubectl apply -f k8s/namespace.yaml
+          if ! command -v helm >/dev/null 2>&1; then
+            echo "Installing Helm..."
+            curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+          else
+            echo "Helm already installed."
+          fi
 
       - name: Recreate DockerHub image pull secret
         run: |
@@ -109,12 +114,14 @@ jobs:
             --docker-email="rituja.chaudhari@equalexperts.com" \
             -n health-api
       
-      - name: Apply other manifests
+      - name: Helm Deploy
         run: |
-          kubectl apply -f k8s/configmap.yaml || echo "No configmap found"
-          kubectl apply -f k8s/deployment.yaml
-          kubectl apply -f k8s/service.yaml
-      
+          helm upgrade --install health-api ./health-api \
+            --namespace health-api \
+            --create-namespace \
+            --set image.repository=${{ secrets.DOCKERHUB_USERNAME }}/health-api-service \
+            --set image.tag=latest
+
       - name: Wait for deployment rollout
         run: kubectl rollout status deployment/health-api-deployment -n health-api
 

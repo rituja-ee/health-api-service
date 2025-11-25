@@ -135,6 +135,32 @@ minikube tunnel
 Hit the url in browser http://127.0.0.1:8000
 ```
 
+# Helm Setup
+## Create docker-secrets in the cluster
+```bash
+kubectl create secret docker-registry dockerhub-secret \
+  --namespace health-api \
+  --docker-server=https://index.docker.io/v1/ \
+  --docker-username="DOCKERHUB_USERNAME" \
+  --docker-password="DOCKERHUB_TOKEN" \
+  --docker-email="dummy@example.com"
+```
+
+## Apply helm changes
+```bash
+helm upgrade --install health-api ./health-api \\n  --namespace h
+```
+
+## Verify pods are running
+```bash
+kubectl get pods -n health-api
+```
+
+## Port forward to access service
+```bash
+kubectl port-forward svc/health-api 8000:8000 -n health-api &
+```
+
 # Project Structure
 ```
 health-api-service/
@@ -146,7 +172,7 @@ health-api-service/
 │   └── test_health_api.py  # Health endpoint tests
 ├── .github/workflows                  
 │   ├── ci.yaml
-├── k8s/                  # Unit tests directory
+├── k8s/                  
 │   ├── deployment.yaml
 │   └── namespace.yaml
 │   └── service.yaml  
