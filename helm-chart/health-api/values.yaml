@@ -1,0 +1,41 @@
+replicaCount: 3
+namespace: health-api
+image:
+  repository: ritujaee/health-api-service
+  pullPolicy: Always
+  tag: "latest"
+
+imagePullSecrets: 
+  - name: dockerhub-secret
+
+service:
+  type: LoadBalancer
+  port: 8000
+  targetPort: 8000
+
+resources: 
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 8000
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /health
+    port: 8000
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+

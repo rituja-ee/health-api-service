@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "health-api.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ include "health-api.name" . }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    app: {{ include "health-api.name" . }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
