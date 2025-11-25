@@ -116,7 +116,7 @@ jobs:
       
       - name: Helm Deploy
         run: |
-          helm upgrade --install health-api ./health-api \
+          helm upgrade --install health-api ./helm-chart/health-api \
             --namespace health-api \
             --create-namespace \
             --set image.repository=${{ secrets.DOCKERHUB_USERNAME }}/health-api-service \
